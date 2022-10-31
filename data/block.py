@@ -2,13 +2,13 @@ import json
 import time
 import hashlib
 import _json
-
+from transaction import transaction
 
 class Block():
-    def __init__(self, p_hash, ID, trans):
+    def __init__(self, p_hash,lastID, trans):
         self.t_stamp = time.asctime(time.localtime(time.time()))
         self.p_hash = p_hash
-        self.ID = ID
+        self.ID = lastID+1
         self.trans = trans
         self.hash = self.getHash()
         self.nonce = 0
