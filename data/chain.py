@@ -50,7 +50,9 @@ class BLKchain():
         return block.__dict__
     def show(self):
         json_res = json.dumps(self.list, default=self.block_dict)
+        
         print(json_res)
+        return json_res
 
     """
     proof of work coding part. Assome difficulty is 2
