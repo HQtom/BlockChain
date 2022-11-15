@@ -3,7 +3,7 @@
 __pycache__/
 /.pnp
 .pnp.js
-
+venv/
 # testing
 /coverage
 

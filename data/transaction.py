@@ -4,10 +4,10 @@ import hashlib
 import _json
 class transaction():
 
-    def __init__(self, sender, recipient, value):
+    def __init__(self, sender, info, data):
         self.sender = sender
-        self.recipient = recipient
-        self.value = value
+        self.info = info
+        self.data = data
         self.time = time.asctime(time.localtime(time.time()))
 
     def to_dict(self): #rap up the transaction by a dict
@@ -18,8 +18,8 @@ class transaction():
             identity = self.sender
         return {
             'sender': identity,
-            'recipient': self.recipient,
-            'value': self.value,
+            'info': self.info,
+            'data': self.data,
             'time': self.time}
 
     def show_trans(self):
