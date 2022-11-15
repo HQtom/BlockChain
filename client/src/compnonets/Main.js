@@ -8,12 +8,12 @@ const Main = () => {
     const navigate = useNavigate();
 
 
-    const ChainPage = () =>{
-        navigate('/chain');
+    const student = () =>{
+        navigate('/student');
     }
 
-    const blockPage = () =>{
-        navigate('/block');
+    const teacher = () =>{
+        navigate('/teacher');
     }
 
     return (
@@ -21,13 +21,13 @@ const Main = () => {
             <h1 className="description_intro">
                 This is the Main web page.
             </h1>
-            <h2>What you want to do?</h2>
-            <button onClick={ChainPage}>
-            Check the Chain
+            <h2>Where you wan to go?</h2>
+            <button onClick={student}>
+            Go to Students page
             </button>
 
-            <button onClick={blockPage}>
-            Check the block
+            <button onClick={teacher}>
+            Go to Teacher page
             </button>
 
         </div>
