@@ -172,7 +172,10 @@ class contract2():
             if self.chain.list[i].trans['status'] == 'reg':
                 l.append([self.chain.list[i].trans['student name'],self.chain.list[i].trans['course']])
             elif self.chain.list[i].trans['status'] == 'drop':
-                l.remove([self.chain.list[i].trans['student name'],self.chain.list[i].trans['course']])
+                try:
+                    l.remove([self.chain.list[i].trans['student name'],self.chain.list[i].trans['course']])
+                except:
+                    pass
         print(l)
 
     ################ contract phase end ################################

@@ -21,9 +21,13 @@ DAPP = DAPP()
 time1 = time.asctime((2023, 11, 14, 5, 6, 6, 0, 0, 0))
 course = contract1('Tom',time1)
 DAPP.add_contract(course)
-h = open('h.txt', 'r').read()
-course.upload_hw('Haowei','ICSI500',h)
-course.chain.show()
+course2 = contract2()
+course2.drop('Haowei','ICSI220')
+course2.register('Haowei','ICSI220')
+course2.showlist()
+#h = open('h.txt', 'r').read()
+#course.upload_hw('Haowei','ICSI500',h)
+#course.chain.show()
 
 
 
