@@ -5,7 +5,7 @@ import block
 import flask
 from flask import Flask, jsonify, request
 from block import Block
-from transaction import transaction
+from transaction import *
 
 
 class BLKchain():
@@ -20,7 +20,7 @@ class BLKchain():
     # block( p_hash,lastID, trans)
     # define system, genblock using ID 0, and 0 is also the system user ID
     def add_genblock(self):
-        tran = transaction("System", "None", "gennesis block")
+        tran = transaction("System", 'None',"None", "gennesis block")
         block = Block(self.lasthash, self.lastID, tran.to_dict())
         self.list.append(block)
         self.lasthash = block.hash
@@ -81,8 +81,8 @@ class BLKchain():
     def addtransaction(self, trans):
         self.unconfirmed_trans.append(trans.to_dict())
 
-    def addtransaction2(self, sender, info, data):
-        tran = transaction(sender, info, data)
+    def addtransaction2(self, sender,course, info, data):
+        tran = transaction(sender, course,info, data)
         self.unconfirmed_trans.append(tran.to_dict())
 
     def Validator(self):
@@ -107,12 +107,12 @@ class BLKchain():
 
         new_block = Block(p_hash=self.lasthash,
                           lastID=self.lastID,
-                          trans=self.unconfirmed_trans,
+                          trans=self.unconfirmed_trans.pop(),  ##
                           )
 
         proof = self.pow(new_block)
         self.add_pblock(new_block, proof)
-        self.unconfirmed_trans = []
+        # self.unconfirmed_trans = []
         return True  # return {dig_is_finished : True }
 
     ################ contract phase ####################################
@@ -120,7 +120,7 @@ class BLKchain():
 
 
 # asctime（year，month，day，clock，min，sec，weekday，which day，summertime?1/0）
-class contract():
+class contract1():
     def __init__(self, name, dtime):
         self.chain = BLKchain()
         self.chain.add_genblock()
@@ -134,44 +134,64 @@ class contract():
         else:
             return False
 
-    def upload_hw(self, sender, data):
+    def upload_hw(self, sender, course, data):
         now = time.asctime(time.localtime(time.time()))
         if now > self.deadline:
             print("homework submit is late")
             return False
-        for i in range(1,len(self.chain.list)):
+        for i in range(1, len(self.chain.list)):
             copy_check = copy_check(data, self.chain.list[i])
             if copy_check:
                 return False
-        self.chain.addtransaction2(sender,'checked',data)
+        self.chain.addtransaction2(sender,course, 'checked', data)
         self.chain.mine()
         # tran = transaction(sneder,info,data)
-
 
     def check_all_hw(self):
         pass
 
+
+class contract2():
+    def __init__(self):
+        self.chain = BLKchain()
+        self.chain.add_genblock()
+
+    def register(self, name, course):
+        reg = register(name, course, 'reg')
+        self.chain.addtransaction(reg)
+        self.chain.mine()
+
+    def drop(self, name, course):
+        reg = register(name, course, 'drop')
+        self.chain.addtransaction(reg)
+        self.chain.mine()
+
+    def showlist(self):
+        l = []
+        for i in range(1, len(self.chain.list)):
+            if self.chain.list[i].trans['status'] == 'reg':
+                l.append([self.chain.list[i].trans['student name'],self.chain.list[i].trans['course']])
+            elif self.chain.list[i].trans['status'] == 'drop':
+                l.remove([self.chain.list[i].trans['student name'],self.chain.list[i].trans['course']])
+        print(l)
+
     ################ contract phase end ################################
 
-
 # b = Block(0,"HQ27716",[])
-contract = contract('Tom',time.asctime((2022, 11, 16, 5, 6, 6, 0, 0, 0)))
-s1 = open('h.txt', 'r').read()
-contract.upload_hw("Haowei5596",s1)
-contract.chain.show()
+# contract = contract1('Tom', time.asctime((2022, 11, 16, 5, 6, 6, 0, 0, 0)))
+# s1 = open('h.txt', 'r').read()
+# contract.upload_hw("Haowei5596", s1)
+# contract.chain.show()
 
-
-
-
-#chain1 = BLKchain()
-#chain1.add_genblock()
+# chain1 = BLKchain()
+# chain1.add_genblock()
 # asctime（year，month，day，clock，min，sec，weekday，which day，summertime?1/0）
 # time1 = time.asctime((2022, 11, 14, 5, 6, 6, 0, 0, 0))
 # time2 = time.asctime((2021, 11, 14, 5, 6, 6, 0, 0, 0))
 # print()
 # chain1.add_block(chain1.lasthash, "HQ265512", [])
 # chain1.addtransaction2("HQ265512","HY883113",5)
-#chain1.addtransaction2("HQ265512", open('h.txt', 'r').read(), "passed")
+# chain1.addtransaction2("HQ265512", open('h.txt', 'r').read(), "passed")
 # print(chain1.unconfirmed_trans)
-#chain1.mine()
-#chain1.show()
+# chain1.mine()
+# chain1.show()
