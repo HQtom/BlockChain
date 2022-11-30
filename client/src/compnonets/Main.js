@@ -16,18 +16,30 @@ const Main = () => {
         navigate('/teacher');
     }
 
+    const regist = () =>{
+        navigate('/regist');
+    }
+
     return (
         <div>
             <h1 className="description_intro">
-                This is the Main web page.
+                Welcome to BlockChain Homework Center
             </h1>
-            <h2>Where you wan to go?</h2>
-            <button onClick={student}>
+            <h2 className = 'description_intro'>Where you wan to go?</h2>
+            <div className="ButtonArea">
+            <button className="mainButton" onClick={student}>
             Go to Students page
             </button>
 
-            <button onClick={teacher}>
+            <button className="mainButton"  onClick={teacher}>
             Go to Teacher page
+            </button>
+            </div>
+
+            <p className="regist_intro">Need to regist or drop your course?</p>
+
+            <button className = 'MainRegistButton' onClick={regist}>
+            Course Change
             </button>
 
         </div>

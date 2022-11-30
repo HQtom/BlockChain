@@ -4,7 +4,7 @@ import re
 
 
 
-@staticmethod
+# @staticmethod
 def integrity_check(s1, s2):
     stopwords = ["stop"]
     s1_cut = [i for i in jieba.cut(s1, cut_all=True) if (i not in stopwords) and i != '']

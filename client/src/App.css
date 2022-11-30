@@ -36,3 +36,55 @@
     transform: rotate(360deg);
   }
 }
+.ButtonArea{
+  margin-left: 450px;
+}
+
+.description_intro{
+  text-align: center;
+}
+
+.regist_intro{
+  margin-left: 30px;
+}
+
+.mainButton{
+  padding: 15px 32px;
+  text-align: center;
+  margin-right: 100px;
+}
+
+.MainRegistButton{
+  padding: 10px 20px;
+  text-align: center;
+  margin-left: 50px;
+}
+
+.Common_description{
+  margin-left: 70px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.StudentPageButton{
+  padding: 5px 20px;
+  text-align: center;
+  margin-left: 250px;
+}
+
+.speicalButton{
+  padding: 5px 20px;
+  text-align: center;
+  margin-top: 2px;
+
+}
+
+.Common_descriptionT{
+  margin-left: 70px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.listInfo{
+  font-size: 20px
+}

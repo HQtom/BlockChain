@@ -1,5 +1,6 @@
 import json
 import time
+import datetime
 from integrity import integrity_check
 import block
 import flask
@@ -117,7 +118,10 @@ class BLKchain():
 
     ################ contract phase ####################################
     ################ contract of chacking and submitting homework#######
-
+def get_time_stamp(valid_time):
+    dd = datetime.datetime.strptime(valid_time, '%m/%d/%Y %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+    ts = int(time.mktime(time.strptime(dd, '%Y-%m-%d %H:%M:%S')))
+    return ts
 
 # asctime（year，month，day，clock，min，sec，weekday，which day，summertime?1/0）
 class contract1():
@@ -135,20 +139,29 @@ class contract1():
             return False
 
     def upload_hw(self, sender, course, data):
-        now = time.asctime(time.localtime(time.time()))
-        if now > self.deadline:
+        #now = time.asctime(time.localtime(time.time()))
+        now = time.time()
+        dead = get_time_stamp(self.deadline)
+
+        if now > dead:
             print("homework submit is late")
-            return False
+            return "Homeworklate"
         for i in range(1, len(self.chain.list)):
-            copy_check = copy_check(data, self.chain.list[i])
-            if copy_check:
-                return False
-        self.chain.addtransaction2(sender,course, 'checked', data)
+            check = self.copy_check(data, self.chain.list[i].trans['data'])
+            if check:
+                print("homework is too similar to the others")
+                return "HomeworkCheat"
+        self.chain.addtransaction2(sender, course, 'checked', data)
         self.chain.mine()
-        # tran = transaction(sneder,info,data)
+        return "OK"
 
     def check_all_hw(self):
-        pass
+        l=[]
+        for i in range(1,len(self.chain.list)):
+            l.append([self.chain.list[i].trans['sender'],self.chain.list[i].trans['course'],self.chain.list[i].trans['data']])
+        print(l)
+        return l
+
 
 
 class contract2():
@@ -160,6 +173,7 @@ class contract2():
         reg = register(name, course, 'reg')
         self.chain.addtransaction(reg)
         self.chain.mine()
+        
 
     def drop(self, name, course):
         reg = register(name, course, 'drop')
@@ -170,13 +184,22 @@ class contract2():
         l = []
         for i in range(1, len(self.chain.list)):
             if self.chain.list[i].trans['status'] == 'reg':
-                l.append([self.chain.list[i].trans['student name'],self.chain.list[i].trans['course']])
+                if [self.chain.list[i].trans['student name'],self.chain.list[i].trans['course']] not in l:
+                    l.append([self.chain.list[i].trans['student name'],self.chain.list[i].trans['course']])
             elif self.chain.list[i].trans['status'] == 'drop':
                 try:
                     l.remove([self.chain.list[i].trans['student name'],self.chain.list[i].trans['course']])
                 except:
                     pass
-        print(l)
+        return l
+
+    def search(self,name):
+        l = self.showlist()
+        l2 = []
+        for i in range(1, len(l)):
+            if l[i][0]==name:
+                l2.append(l[i])
+        return l2
 
     ################ contract phase end ################################
 
@@ -198,3 +221,11 @@ class contract2():
 # print(chain1.unconfirmed_trans)
 # chain1.mine()
 # chain1.show()
+
+# contract = contract1('Tom', time.asctime((2022, 11, 29, 5, 6, 6, 0, 0, 0)))
+# s1 = open('h.txt', 'r').read()
+# print(integrity_check(s1, s1))
+# contract.upload_hw("Haowei5596", 'ICSI210', s1)
+# contract.upload_hw("Haowei5596", 'ICSI210', s1)
+# contract.chain.show()
+# contract.check_all_hw()
